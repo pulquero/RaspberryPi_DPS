@@ -1,5 +1,3 @@
-import smbus
-
 from time import sleep
 
 
@@ -44,10 +42,6 @@ class DPS:
 
     """
 
-    __bus = smbus.SMBus(1)
-
-    __addr = 0x77
-
 
 
     # Compensation Scale Factors
@@ -80,7 +74,7 @@ class DPS:
 
 
 
-    def __init__(self):
+    def __init__(self, bus, addr=0x77):
 
         """Initial setting.
 
@@ -89,6 +83,9 @@ class DPS:
         Execute `self.correctTemperature()` and `self.setOversamplingRate()`.
 
         """
+
+        self.__bus = bus
+        self.__addr = addr
 
         self.__correctTemperature()
 
@@ -114,15 +111,15 @@ class DPS:
 
         # Correct Temp
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x0E, 0xA5)
+        self.__bus.write_byte_data(self.__addr, 0x0E, 0xA5)
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x0F, 0x96)
+        self.__bus.write_byte_data(self.__addr, 0x0F, 0x96)
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x62, 0x02)
+        self.__bus.write_byte_data(self.__addr, 0x62, 0x02)
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x0E, 0x00)
+        self.__bus.write_byte_data(self.__addr, 0x0E, 0x00)
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x0F, 0x00)
+        self.__bus.write_byte_data(self.__addr, 0x0F, 0x00)
 
 
 
@@ -146,15 +143,15 @@ class DPS:
 
         # Oversampling Rate Setting (64time)
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x06, 0x26)
+        self.__bus.write_byte_data(self.__addr, 0x06, 0x26)
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x07, 0xA6)
+        self.__bus.write_byte_data(self.__addr, 0x07, 0xA6)
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x08, 0x07)
+        self.__bus.write_byte_data(self.__addr, 0x08, 0x07)
 
         # Oversampling Rate Configuration
 
-        DPS.__bus.write_byte_data(DPS.__addr, 0x09, 0x0C)
+        self.__bus.write_byte_data(self.__addr, 0x09, 0x0C)
 
 
 
@@ -172,11 +169,11 @@ class DPS:
 
         """
 
-        p1 = DPS.__bus.read_byte_data(DPS.__addr, 0x00)
+        p1 = self.__bus.read_byte_data(self.__addr, 0x00)
 
-        p2 = DPS.__bus.read_byte_data(DPS.__addr, 0x01)
+        p2 = self.__bus.read_byte_data(self.__addr, 0x01)
 
-        p3 = DPS.__bus.read_byte_data(DPS.__addr, 0x02)
+        p3 = self.__bus.read_byte_data(self.__addr, 0x02)
 
 
 
@@ -202,11 +199,11 @@ class DPS:
 
         """
 
-        t1 = DPS.__bus.read_byte_data(DPS.__addr, 0x03)
+        t1 = self.__bus.read_byte_data(self.__addr, 0x03)
 
-        t2 = DPS.__bus.read_byte_data(DPS.__addr, 0x04)
+        t2 = self.__bus.read_byte_data(self.__addr, 0x04)
 
-        t3 = DPS.__bus.read_byte_data(DPS.__addr, 0x05)
+        t3 = self.__bus.read_byte_data(self.__addr, 0x05)
 
 
 
@@ -244,35 +241,35 @@ class DPS:
 
         """
 
-        src13 = DPS.__bus.read_byte_data(DPS.__addr, 0x13)
+        src13 = self.__bus.read_byte_data(self.__addr, 0x13)
 
-        src14 = DPS.__bus.read_byte_data(DPS.__addr, 0x14)
+        src14 = self.__bus.read_byte_data(self.__addr, 0x14)
 
-        src15 = DPS.__bus.read_byte_data(DPS.__addr, 0x15)
+        src15 = self.__bus.read_byte_data(self.__addr, 0x15)
 
-        src16 = DPS.__bus.read_byte_data(DPS.__addr, 0x16)
+        src16 = self.__bus.read_byte_data(self.__addr, 0x16)
 
-        src17 = DPS.__bus.read_byte_data(DPS.__addr, 0x17)
+        src17 = self.__bus.read_byte_data(self.__addr, 0x17)
 
-        src18 = DPS.__bus.read_byte_data(DPS.__addr, 0x18)
+        src18 = self.__bus.read_byte_data(self.__addr, 0x18)
 
-        src19 = DPS.__bus.read_byte_data(DPS.__addr, 0x19)
+        src19 = self.__bus.read_byte_data(self.__addr, 0x19)
 
-        src1A = DPS.__bus.read_byte_data(DPS.__addr, 0x1A)
+        src1A = self.__bus.read_byte_data(self.__addr, 0x1A)
 
-        src1B = DPS.__bus.read_byte_data(DPS.__addr, 0x1B)
+        src1B = self.__bus.read_byte_data(self.__addr, 0x1B)
 
-        src1C = DPS.__bus.read_byte_data(DPS.__addr, 0x1C)
+        src1C = self.__bus.read_byte_data(self.__addr, 0x1C)
 
-        src1D = DPS.__bus.read_byte_data(DPS.__addr, 0x1D)
+        src1D = self.__bus.read_byte_data(self.__addr, 0x1D)
 
-        src1E = DPS.__bus.read_byte_data(DPS.__addr, 0x1E)
+        src1E = self.__bus.read_byte_data(self.__addr, 0x1E)
 
-        src1F = DPS.__bus.read_byte_data(DPS.__addr, 0x1F)
+        src1F = self.__bus.read_byte_data(self.__addr, 0x1F)
 
-        src20 = DPS.__bus.read_byte_data(DPS.__addr, 0x20)
+        src20 = self.__bus.read_byte_data(self.__addr, 0x20)
 
-        src21 = DPS.__bus.read_byte_data(DPS.__addr, 0x21)
+        src21 = self.__bus.read_byte_data(self.__addr, 0x21)
 
 
 
@@ -338,11 +335,11 @@ class DPS:
 
         """
 
-        src10 = DPS.__bus.read_byte_data(DPS.__addr, 0x10)
+        src10 = self.__bus.read_byte_data(self.__addr, 0x10)
 
-        src11 = DPS.__bus.read_byte_data(DPS.__addr, 0x11)
+        src11 = self.__bus.read_byte_data(self.__addr, 0x11)
 
-        src12 = DPS.__bus.read_byte_data(DPS.__addr, 0x12)
+        src12 = self.__bus.read_byte_data(self.__addr, 0x12)
 
 
 
@@ -506,15 +503,12 @@ class DPS:
              
             
 
+
 class DPS422:
 
     """Class of DPS422, Pressure and Temperature sensor.
 
     """
-
-    __bus = smbus.SMBus(1)
-
-    __addr = 0x77
 
 
 
@@ -561,7 +555,7 @@ class DPS422:
 
 
 
-    def __init__(self):
+    def __init__(self, bus, addr=0x77):
 
         """Initial setting.
 
@@ -570,6 +564,9 @@ class DPS422:
         Execute `self.correctTemperature()` and `self.setOversamplingRate()`.
 
         """
+
+        self.__bus = bus
+        self.__addr = addr
 
         self.__correctTemperature()
 
@@ -595,15 +592,15 @@ class DPS422:
 
         # Correct Temp
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x0E, 0xA5)
+        self.__bus.write_byte_data(self.__addr, 0x0E, 0xA5)
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x0F, 0x96)
+        self.__bus.write_byte_data(self.__addr, 0x0F, 0x96)
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x62, 0x02)
+        self.__bus.write_byte_data(self.__addr, 0x62, 0x02)
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x0E, 0x00)
+        self.__bus.write_byte_data(self.__addr, 0x0E, 0x00)
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x0F, 0x00)
+        self.__bus.write_byte_data(self.__addr, 0x0F, 0x00)
 
 
 
@@ -627,15 +624,15 @@ class DPS422:
 
         # Oversampling Rate Setting (64time)
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x06, 0x26)
+        self.__bus.write_byte_data(self.__addr, 0x06, 0x26)
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x07, 0xA6)
+        self.__bus.write_byte_data(self.__addr, 0x07, 0xA6)
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x08, 0x07)
+        self.__bus.write_byte_data(self.__addr, 0x08, 0x07)
 
         # Oversampling Rate Configuration
 
-        DPS422.__bus.write_byte_data(DPS422.__addr, 0x09, 0x0C)
+        self.__bus.write_byte_data(self.__addr, 0x09, 0x0C)
 
 
 
@@ -653,11 +650,11 @@ class DPS422:
 
         """
 
-        p1 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x00)
+        p1 = self.__bus.read_byte_data(self.__addr, 0x00)
 
-        p2 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x01)
+        p2 = self.__bus.read_byte_data(self.__addr, 0x01)
 
-        p3 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x02)
+        p3 = self.__bus.read_byte_data(self.__addr, 0x02)
 
 
 
@@ -683,11 +680,11 @@ class DPS422:
 
         """
 
-        t1 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x03)
+        t1 = self.__bus.read_byte_data(self.__addr, 0x03)
 
-        t2 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x04)
+        t2 = self.__bus.read_byte_data(self.__addr, 0x04)
 
-        t3 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x05)
+        t3 = self.__bus.read_byte_data(self.__addr, 0x05)
 
 
 
@@ -729,45 +726,45 @@ class DPS422:
 
         """
         
-        src26 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x26)
+        src26 = self.__bus.read_byte_data(self.__addr, 0x26)
 
-        src27 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x27)
+        src27 = self.__bus.read_byte_data(self.__addr, 0x27)
 
-        src28 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x28)
+        src28 = self.__bus.read_byte_data(self.__addr, 0x28)
 
-        src29 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x29)
+        src29 = self.__bus.read_byte_data(self.__addr, 0x29)
 
-        src2A = DPS422.__bus.read_byte_data(DPS422.__addr, 0x2A)
+        src2A = self.__bus.read_byte_data(self.__addr, 0x2A)
 
-        src2B = DPS422.__bus.read_byte_data(DPS422.__addr, 0x2B)
+        src2B = self.__bus.read_byte_data(self.__addr, 0x2B)
 
-        src2C = DPS422.__bus.read_byte_data(DPS422.__addr, 0x2C)
+        src2C = self.__bus.read_byte_data(self.__addr, 0x2C)
 
-        src2D = DPS422.__bus.read_byte_data(DPS422.__addr, 0x2D)
+        src2D = self.__bus.read_byte_data(self.__addr, 0x2D)
 
-        src2E = DPS422.__bus.read_byte_data(DPS422.__addr, 0x2E)
+        src2E = self.__bus.read_byte_data(self.__addr, 0x2E)
 
-        src2F = DPS422.__bus.read_byte_data(DPS422.__addr, 0x2F)
+        src2F = self.__bus.read_byte_data(self.__addr, 0x2F)
 
-        src30 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x30)
+        src30 = self.__bus.read_byte_data(self.__addr, 0x30)
 
-        src31 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x31)
+        src31 = self.__bus.read_byte_data(self.__addr, 0x31)
 
-        src32 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x32)
+        src32 = self.__bus.read_byte_data(self.__addr, 0x32)
 
-        src33 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x33)
+        src33 = self.__bus.read_byte_data(self.__addr, 0x33)
 
-        src34 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x34)
+        src34 = self.__bus.read_byte_data(self.__addr, 0x34)
         
-        src35 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x35)
+        src35 = self.__bus.read_byte_data(self.__addr, 0x35)
 
-        src36 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x36)
+        src36 = self.__bus.read_byte_data(self.__addr, 0x36)
 
-        src37 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x37)
+        src37 = self.__bus.read_byte_data(self.__addr, 0x37)
 
-        src38 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x38)
+        src38 = self.__bus.read_byte_data(self.__addr, 0x38)
 
-        src39 = DPS422.__bus.read_byte_data(DPS422.__addr, 0x39)
+        src39 = self.__bus.read_byte_data(self.__addr, 0x39)
 
 
 
@@ -829,11 +826,11 @@ class DPS422:
 
         """
         #read T_Gain, T_Vbe and T_dVbe
-        T_Gain = DPS422.__bus.read_byte_data(DPS422.__addr, 0x20)
+        T_Gain = self.__bus.read_byte_data(self.__addr, 0x20)
 
-        T_dVBE_Coeff = DPS422.__bus.read_byte_data(DPS422.__addr, 0x21)
+        T_dVBE_Coeff = self.__bus.read_byte_data(self.__addr, 0x21)
 
-        T_VBE_Coeff = DPS422.__bus.read_byte_data(DPS422.__addr, 0x22)
+        T_VBE_Coeff = self.__bus.read_byte_data(self.__addr, 0x22)
 
         T_dVbe = T_dVBE_Coeff >> 1
 
